@@ -165,9 +165,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                 ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
                 $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                 if ($newline === FALSE) {
-                    ' . $this->column . ' = ' . $this->counter . ';
+                    ' . $this->column . ' = ' . $this->counter . ' + 1;
                 } else {
-                    ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                    ' . $this->column . ' = ' . $this->counter . ' - $newline;
                 }
                 // accept this token
                 return true;
@@ -180,9 +180,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                 ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
                 $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                 if ($newline === FALSE) {
-                    ' . $this->column . ' = ' . $this->counter . ';
+                    ' . $this->column . ' = ' . $this->counter . ' + 1;
                 } else {
-                    ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                    ' . $this->column . ' = ' . $this->counter . ' - $newline;
                 }
                 if (' . $this->counter . ' >= strlen(' . $this->input . ')) {
                     return false; // end of input
@@ -225,9 +225,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                     ' . $this->line . ' = substr_count(' . $this->value . ', "\n");
                     $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                     if ($newline === FALSE) {
-                        ' . $this->column . ' = ' . $this->counter . ';
+                        ' . $this->column . ' = ' . $this->counter . ' + 1;
                     } else {
-                        ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                        ' . $this->column . ' = ' . $this->counter . ' - $newline;
                     }
                     $r = $this->{\'yy_r' . $ruleindex . '_\' . ' . $this->token . '}();
                 } while ($r !== null || !$r);
@@ -241,9 +241,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                     ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
                     $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                     if ($newline === FALSE) {
-                        ' . $this->column . ' = ' . $this->counter . ';
+                        ' . $this->column . ' = ' . $this->counter . ' + 1;
                     } else {
-                        ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                        ' . $this->column . ' = ' . $this->counter . ' - $newline;
                     }
                     return true;
                 }
@@ -310,9 +310,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                     ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
                     $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                     if ($newline === FALSE) {
-                        ' . $this->column . ' = ' . $this->counter . ';
+                        ' . $this->column . ' = ' . $this->counter . ' + 1;
                     } else {
-                        ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                        ' . $this->column . ' = ' . $this->counter . ' - $newline;
                     }
                     // accept this token
                     return true;
@@ -325,9 +325,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                     ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
                     $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                     if ($newline === FALSE) {
-                        ' . $this->column . ' = ' . $this->counter . ';
+                        ' . $this->column . ' = ' . $this->counter . ' + 1;
                     } else {
-                        ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                        ' . $this->column . ' = ' . $this->counter . ' - $newline;
                     }
                     if (' . $this->counter . ' >= strlen(' . $this->input . ')) {
                         return false; // end of input
@@ -363,9 +363,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                             ' . $this->line . ' = substr_count(' . $this->value . ', "\n");
                             $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                             if ($newline === FALSE) {
-                                ' . $this->column . ' = ' . $this->counter . ';
+                                ' . $this->column . ' = ' . $this->counter . ' + 1;
                             } else {
-                                ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                                ' . $this->column . ' = ' . $this->counter . ' - $newline;
                             }
                             if ($tokenMap[' . $this->token . ']) {
                                 // extract sub-patterns for passing to lex function
@@ -386,9 +386,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                         ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
                         $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                         if ($newline === FALSE) {
-                            ' . $this->column . ' = ' . $this->counter . ';
+                            ' . $this->column . ' = ' . $this->counter . ' + 1;
                         } else {
-                            ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                            ' . $this->column . ' = ' . $this->counter . ' - $newline;
                         }
                         if (' . $this->counter . ' >= strlen(' . $this->input . ')) {
                             return false; // end of input
@@ -401,9 +401,9 @@ require_once 'PHP/LexerGenerator/Exception.php';
                         ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
                         $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
                         if ($newline === FALSE) {
-                            ' . $this->column . ' = ' . $this->counter . ';
+                            ' . $this->column . ' = ' . $this->counter . ' + 1;
                         } else {
-                            ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                            ' . $this->column . ' = ' . $this->counter . ' - $newline;
                         }
                         return true;
                     }
