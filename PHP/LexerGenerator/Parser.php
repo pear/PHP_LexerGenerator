@@ -179,6 +179,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
     private $token;
     private $value;
     private $line;
+    private $column;
     private $matchlongest;
     private $_regexLexer;
     private $_regexParser;
@@ -239,8 +240,8 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                 }
             }
             if (!$match) {
-                throw new Exception(\'Unexpected input at line \' . ' . $this->line . ' .
-                    \': \' . ' . $this->input . '[' . $this->counter . ']);
+                throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                    ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
             }
             ' . $this->token . ' = $match[1];
             ' . $this->value . ' = $match[0][0];
@@ -253,6 +254,12 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
             if ($r === null) {
                 ' . $this->counter . ' += strlen(' . $this->value . ');
                 ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
+                $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                if ($newline === FALSE) {
+                    ' . $this->column . ' = ' . $this->counter . ';
+                } else {
+                    ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                }
                 // accept this token
                 return true;
             } elseif ($r === true) {
@@ -262,6 +269,12 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
             } elseif ($r === false) {
                 ' . $this->counter . ' += strlen(' . $this->value . ');
                 ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
+                $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                if ($newline === FALSE) {
+                    ' . $this->column . ' = ' . $this->counter . ';
+                } else {
+                    ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                }
                 if (' . $this->counter . ' >= strlen(' . $this->input . ')) {
                     return false; // end of input
                 }
@@ -290,8 +303,8 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                         }
                     }
                     if (!$match) {
-                        throw new Exception(\'Unexpected input at line \' . ' . $this->line . ' .
-                            \': \' . ' . $this->input . '[' . $this->counter . ']);
+                        throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                            ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
                     }
                     ' . $this->token . ' = $match[1];
                     ' . $this->value . ' = $match[0][0];
@@ -301,6 +314,12 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                         $yysubmatches = array();
                     }
                     ' . $this->line . ' = substr_count(' . $this->value . ', "\n");
+                    $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                    if ($newline === FALSE) {
+                        ' . $this->column . ' = ' . $this->counter . ';
+                    } else {
+                        ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                    }
                     $r = $this->{\'yy_r' . $ruleindex . '_\' . ' . $this->token . '}();
                 } while ($r !== null || !$r);
                 if ($r === true) {
@@ -311,6 +330,12 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                     // accept
                     ' . $this->counter . ' += strlen(' . $this->value . ');
                     ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
+                    $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                    if ($newline === FALSE) {
+                        ' . $this->column . ' = ' . $this->counter . ';
+                    } else {
+                        ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                    }
                     return true;
                 }
             }
@@ -374,6 +399,12 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                 if ($r === null) {
                     ' . $this->counter . ' += strlen(' . $this->value . ');
                     ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
+                    $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                    if ($newline === FALSE) {
+                        ' . $this->column . ' = ' . $this->counter . ';
+                    } else {
+                        ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                    }
                     // accept this token
                     return true;
                 } elseif ($r === true) {
@@ -383,6 +414,12 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                 } elseif ($r === false) {
                     ' . $this->counter . ' += strlen(' . $this->value . ');
                     ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
+                    $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                    if ($newline === FALSE) {
+                        ' . $this->column . ' = ' . $this->counter . ';
+                    } else {
+                        ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                    }
                     if (' . $this->counter . ' >= strlen(' . $this->input . ')) {
                         return false; // end of input
                     }
@@ -415,6 +452,12 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                             ' . $this->token . ' += key($yymatches) + $yy_yymore_patterns[' . $this->token . '][0]; // token number
                             ' . $this->value . ' = current($yymatches); // token value
                             ' . $this->line . ' = substr_count(' . $this->value . ', "\n");
+                            $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                            if ($newline === FALSE) {
+                                ' . $this->column . ' = ' . $this->counter . ';
+                            } else {
+                                ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                            }
                             if ($tokenMap[' . $this->token . ']) {
                                 // extract sub-patterns for passing to lex function
                                 $yysubmatches = array_slice($yysubmatches, ' . $this->token . ' + 1,
@@ -432,6 +475,12 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                     } elseif ($r === false) {
                         ' . $this->counter . ' += strlen(' . $this->value . ');
                         ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
+                        $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                        if ($newline === FALSE) {
+                            ' . $this->column . ' = ' . $this->counter . ';
+                        } else {
+                            ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                        }
                         if (' . $this->counter . ' >= strlen(' . $this->input . ')) {
                             return false; // end of input
                         }
@@ -441,12 +490,18 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                         // accept
                         ' . $this->counter . ' += strlen(' . $this->value . ');
                         ' . $this->line . ' += substr_count(' . $this->value . ', "\n");
+                        $newline = strrpos(substr(' . $this->input . ', 0, ' . $this->counter . '), "\n");
+                        if ($newline === FALSE) {
+                            ' . $this->column . ' = ' . $this->counter . ';
+                        } else {
+                            ' . $this->column . ' = ' . $this->counter . ' - $newline - 1;
+                        }
                         return true;
                     }
                 }
             } else {
-                throw new Exception(\'Unexpected input at line\' . ' . $this->line . ' .
-                    \': \' . ' . $this->input . '[' . $this->counter . ']);
+                throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                    ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
             }
             break;
         } while (true);
@@ -522,7 +577,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
         }
         return $this->_regexParser->result;
     }
-#line 529 "Parser.php"
+#line 585 "PHP/LexerGenerator/Parser.php"
 
 /* Next is all token values, as class constants
 */
@@ -1308,7 +1363,7 @@ static public $yy_action = array(
     **   function yy_r0($yymsp){ ... }           // User supplied code
     **  #line <lineno> <thisfile>
     */
-#line 438 "Parser.y"
+#line 490 "PHP/LexerGenerator/Parser.y"
     function yy_r1(){
     fwrite($this->out, '
     private $_yy_state = 1;
@@ -1343,8 +1398,8 @@ static public $yy_action = array(
         }
     }
     }
-#line 1352 "Parser.php"
-#line 472 "Parser.y"
+#line 1408 "PHP/LexerGenerator/Parser.php"
+#line 524 "PHP/LexerGenerator/Parser.y"
     function yy_r2(){
     fwrite($this->out, '
     private $_yy_state = 1;
@@ -1382,8 +1437,8 @@ static public $yy_action = array(
         }
     }
     }
-#line 1391 "Parser.php"
-#line 509 "Parser.y"
+#line 1447 "PHP/LexerGenerator/Parser.php"
+#line 561 "PHP/LexerGenerator/Parser.y"
     function yy_r3(){
     if (strlen($this->yystack[$this->yyidx + -2]->minor)) {
         fwrite($this->out, $this->yystack[$this->yyidx + -2]->minor);
@@ -1421,8 +1476,8 @@ static public $yy_action = array(
         }
     }
     }
-#line 1430 "Parser.php"
-#line 546 "Parser.y"
+#line 1486 "PHP/LexerGenerator/Parser.php"
+#line 598 "PHP/LexerGenerator/Parser.y"
     function yy_r4(){
     if (strlen($this->yystack[$this->yyidx + -3]->minor)) {
         fwrite($this->out, $this->yystack[$this->yyidx + -3]->minor);
@@ -1463,15 +1518,15 @@ static public $yy_action = array(
         }
     }
     }
-#line 1472 "Parser.php"
-#line 587 "Parser.y"
+#line 1528 "PHP/LexerGenerator/Parser.php"
+#line 639 "PHP/LexerGenerator/Parser.y"
     function yy_r5(){
     $this->_retvalue = $this->yystack[$this->yyidx + -1]->minor;
     $this->patterns = $this->yystack[$this->yyidx + -1]->minor['patterns'];
     $this->_patternIndex = 1;
     }
-#line 1479 "Parser.php"
-#line 593 "Parser.y"
+#line 1535 "PHP/LexerGenerator/Parser.php"
+#line 645 "PHP/LexerGenerator/Parser.y"
     function yy_r6(){
     $expected = array(
         'counter' => true,
@@ -1479,6 +1534,7 @@ static public $yy_action = array(
         'token' => true,
         'value' => true,
         'line' => true,
+        'column' => true,
     );
     foreach ($this->yystack[$this->yyidx + -1]->minor as $pi) {
         if (isset($expected[$pi['pi']])) {
@@ -1497,6 +1553,7 @@ static public $yy_action = array(
         'token' => true,
         'value' => true,
         'line' => true,
+        'column' => true,
         'matchlongest' => true,
         'unicode' => true,
     );
@@ -1516,26 +1573,26 @@ static public $yy_action = array(
     $this->_retvalue = array('patterns' => $this->yystack[$this->yyidx + 0]->minor, 'pis' => $this->yystack[$this->yyidx + -1]->minor);
     $this->_patternIndex = 1;
     }
-#line 1525 "Parser.php"
-#line 638 "Parser.y"
+#line 1584 "PHP/LexerGenerator/Parser.php"
+#line 693 "PHP/LexerGenerator/Parser.y"
     function yy_r7(){
     $this->_retvalue = array(array('pi' => $this->yystack[$this->yyidx + -1]->minor, 'definition' => $this->yystack[$this->yyidx + 0]->minor));
     }
-#line 1530 "Parser.php"
-#line 644 "Parser.y"
+#line 1589 "PHP/LexerGenerator/Parser.php"
+#line 699 "PHP/LexerGenerator/Parser.y"
     function yy_r9(){
     $this->_retvalue = $this->yystack[$this->yyidx + -2]->minor;
     $this->_retvalue[] = array('pi' => $this->yystack[$this->yyidx + -1]->minor, 'definition' => $this->yystack[$this->yyidx + 0]->minor);
     }
-#line 1536 "Parser.php"
-#line 653 "Parser.y"
+#line 1595 "PHP/LexerGenerator/Parser.php"
+#line 708 "PHP/LexerGenerator/Parser.y"
     function yy_r11(){
     $this->_retvalue = array($this->yystack[$this->yyidx + -1]->minor => $this->yystack[$this->yyidx + 0]->minor);
     // reset internal indicator of where we are in a pattern
     $this->_patternIndex = 0;
     }
-#line 1543 "Parser.php"
-#line 658 "Parser.y"
+#line 1602 "PHP/LexerGenerator/Parser.php"
+#line 713 "PHP/LexerGenerator/Parser.y"
     function yy_r12(){
     $this->_retvalue = $this->yystack[$this->yyidx + -2]->minor;
     if (isset($this->_retvalue[$this->yystack[$this->yyidx + -1]->minor])) {
@@ -1546,13 +1603,13 @@ static public $yy_action = array(
     // reset internal indicator of where we are in a pattern declaration
     $this->_patternIndex = 0;
     }
-#line 1555 "Parser.php"
-#line 669 "Parser.y"
+#line 1614 "PHP/LexerGenerator/Parser.php"
+#line 724 "PHP/LexerGenerator/Parser.y"
     function yy_r13(){
     $this->_retvalue = array(array('rules' => $this->yystack[$this->yyidx + -1]->minor, 'code' => '', 'statename' => ''));
     }
-#line 1560 "Parser.php"
-#line 672 "Parser.y"
+#line 1619 "PHP/LexerGenerator/Parser.php"
+#line 727 "PHP/LexerGenerator/Parser.y"
     function yy_r14(){
     if ($this->yystack[$this->yyidx + -3]->minor != 'statename') {
         throw new Exception('Error: only %statename processing instruction ' .
@@ -1560,13 +1617,13 @@ static public $yy_action = array(
     }
     $this->_retvalue = array(array('rules' => $this->yystack[$this->yyidx + -1]->minor, 'code' => '', 'statename' => $this->yystack[$this->yyidx + -2]->minor));
     }
-#line 1569 "Parser.php"
-#line 679 "Parser.y"
+#line 1628 "PHP/LexerGenerator/Parser.php"
+#line 734 "PHP/LexerGenerator/Parser.y"
     function yy_r15(){
     $this->_retvalue = array(array('rules' => $this->yystack[$this->yyidx + -2]->minor, 'code' => $this->yystack[$this->yyidx + 0]->minor, 'statename' => ''));
     }
-#line 1574 "Parser.php"
-#line 682 "Parser.y"
+#line 1633 "PHP/LexerGenerator/Parser.php"
+#line 737 "PHP/LexerGenerator/Parser.y"
     function yy_r16(){
     if ($this->yystack[$this->yyidx + -4]->minor != 'statename') {
         throw new Exception('Error: only %statename processing instruction ' .
@@ -1575,15 +1632,15 @@ static public $yy_action = array(
     $this->_retvalue = array(array('rules' => $this->yystack[$this->yyidx + -2]->minor, 'code' => $this->yystack[$this->yyidx + 0]->minor, 'statename' => $this->yystack[$this->yyidx + -3]->minor));
     $this->_patternIndex = 1;
     }
-#line 1584 "Parser.php"
-#line 690 "Parser.y"
+#line 1643 "PHP/LexerGenerator/Parser.php"
+#line 745 "PHP/LexerGenerator/Parser.y"
     function yy_r17(){
     $this->_retvalue = $this->yystack[$this->yyidx + -2]->minor;
     $this->_retvalue[] = array('rules' => $this->yystack[$this->yyidx + -1]->minor, 'code' => '', 'statename' => '');
     $this->_patternIndex = 1;
     }
-#line 1591 "Parser.php"
-#line 695 "Parser.y"
+#line 1650 "PHP/LexerGenerator/Parser.php"
+#line 750 "PHP/LexerGenerator/Parser.y"
     function yy_r18(){
     if ($this->yystack[$this->yyidx + -3]->minor != 'statename') {
         throw new Exception('Error: only %statename processing instruction ' .
@@ -1592,14 +1649,14 @@ static public $yy_action = array(
     $this->_retvalue = $this->yystack[$this->yyidx + -4]->minor;
     $this->_retvalue[] = array('rules' => $this->yystack[$this->yyidx + -1]->minor, 'code' => '', 'statename' => $this->yystack[$this->yyidx + -2]->minor);
     }
-#line 1601 "Parser.php"
-#line 703 "Parser.y"
+#line 1660 "PHP/LexerGenerator/Parser.php"
+#line 758 "PHP/LexerGenerator/Parser.y"
     function yy_r19(){
     $this->_retvalue = $this->yystack[$this->yyidx + -3]->minor;
     $this->_retvalue[] = array('rules' => $this->yystack[$this->yyidx + -2]->minor, 'code' => $this->yystack[$this->yyidx + 0]->minor, 'statename' => '');
     }
-#line 1607 "Parser.php"
-#line 707 "Parser.y"
+#line 1666 "PHP/LexerGenerator/Parser.php"
+#line 762 "PHP/LexerGenerator/Parser.y"
     function yy_r20(){
     if ($this->yystack[$this->yyidx + -4]->minor != 'statename') {
         throw new Exception('Error: only %statename processing instruction ' .
@@ -1608,14 +1665,14 @@ static public $yy_action = array(
     $this->_retvalue = $this->yystack[$this->yyidx + -5]->minor;
     $this->_retvalue[] = array('rules' => $this->yystack[$this->yyidx + -2]->minor, 'code' => $this->yystack[$this->yyidx + 0]->minor, 'statename' => $this->yystack[$this->yyidx + -3]->minor);
     }
-#line 1617 "Parser.php"
-#line 716 "Parser.y"
+#line 1676 "PHP/LexerGenerator/Parser.php"
+#line 771 "PHP/LexerGenerator/Parser.y"
     function yy_r21(){
     $this->_retvalue = $this->yystack[$this->yyidx + -1]->minor;
     $this->_patternIndex = 1;
     }
-#line 1623 "Parser.php"
-#line 721 "Parser.y"
+#line 1682 "PHP/LexerGenerator/Parser.php"
+#line 776 "PHP/LexerGenerator/Parser.y"
     function yy_r22(){
     $name = $this->yystack[$this->yyidx + -1]->minor[1];
     $this->yystack[$this->yyidx + -1]->minor = $this->yystack[$this->yyidx + -1]->minor[0];
@@ -1626,8 +1683,8 @@ static public $yy_action = array(
     }
     $this->_retvalue = array(array('pattern' => str_replace('/', '\\/', $this->yystack[$this->yyidx + -1]->minor->string), 'code' => $this->yystack[$this->yyidx + 0]->minor, 'subpatterns' => $this->yystack[$this->yyidx + -1]->minor['subpatterns']));
     }
-#line 1635 "Parser.php"
-#line 731 "Parser.y"
+#line 1694 "PHP/LexerGenerator/Parser.php"
+#line 786 "PHP/LexerGenerator/Parser.y"
     function yy_r23(){
     $this->_retvalue = $this->yystack[$this->yyidx + -2]->minor;
     $name = $this->yystack[$this->yyidx + -1]->minor[1];
@@ -1639,18 +1696,18 @@ static public $yy_action = array(
     }
     $this->_retvalue[] = array('pattern' => str_replace('/', '\\/', $this->yystack[$this->yyidx + -1]->minor->string), 'code' => $this->yystack[$this->yyidx + 0]->minor, 'subpatterns' => $this->yystack[$this->yyidx + -1]->minor['subpatterns']);
     }
-#line 1648 "Parser.php"
-#line 743 "Parser.y"
+#line 1707 "PHP/LexerGenerator/Parser.php"
+#line 798 "PHP/LexerGenerator/Parser.y"
     function yy_r24(){
     $this->_retvalue = array(preg_quote($this->yystack[$this->yyidx + 0]->minor, '/'), $this->yystack[$this->yyidx + 0]->minor);
     }
-#line 1653 "Parser.php"
-#line 746 "Parser.y"
+#line 1712 "PHP/LexerGenerator/Parser.php"
+#line 801 "PHP/LexerGenerator/Parser.y"
     function yy_r25(){
     $this->_retvalue = array($this->makeCaseInsensitve(preg_quote($this->yystack[$this->yyidx + 0]->minor, '/')), $this->yystack[$this->yyidx + 0]->minor);
     }
-#line 1658 "Parser.php"
-#line 749 "Parser.y"
+#line 1717 "PHP/LexerGenerator/Parser.php"
+#line 804 "PHP/LexerGenerator/Parser.y"
     function yy_r26(){
     if (!isset($this->patterns[$this->yystack[$this->yyidx + 0]->minor])) {
         $this->error('Undefined pattern "' . $this->yystack[$this->yyidx + 0]->minor . '" used in rules');
@@ -1658,18 +1715,18 @@ static public $yy_action = array(
     }
     $this->_retvalue = array($this->patterns[$this->yystack[$this->yyidx + 0]->minor], $this->yystack[$this->yyidx + 0]->minor);
     }
-#line 1667 "Parser.php"
-#line 756 "Parser.y"
+#line 1726 "PHP/LexerGenerator/Parser.php"
+#line 811 "PHP/LexerGenerator/Parser.y"
     function yy_r27(){
     $this->_retvalue = array($this->yystack[$this->yyidx + -1]->minor[0] . preg_quote($this->yystack[$this->yyidx + 0]->minor, '/'), $this->yystack[$this->yyidx + -1]->minor[1] . ' ' . $this->yystack[$this->yyidx + 0]->minor);
     }
-#line 1672 "Parser.php"
-#line 759 "Parser.y"
+#line 1731 "PHP/LexerGenerator/Parser.php"
+#line 814 "PHP/LexerGenerator/Parser.y"
     function yy_r28(){
     $this->_retvalue = array($this->yystack[$this->yyidx + -1]->minor[0] . $this->makeCaseInsensitve(preg_quote($this->yystack[$this->yyidx + 0]->minor, '/')), $this->yystack[$this->yyidx + -1]->minor[1] . ' ' . $this->yystack[$this->yyidx + 0]->minor);
     }
-#line 1677 "Parser.php"
-#line 762 "Parser.y"
+#line 1736 "PHP/LexerGenerator/Parser.php"
+#line 817 "PHP/LexerGenerator/Parser.y"
     function yy_r29(){
     if (!isset($this->patterns[$this->yystack[$this->yyidx + 0]->minor])) {
         $this->error('Undefined pattern "' . $this->yystack[$this->yyidx + 0]->minor . '" used in rules');
@@ -1677,18 +1734,18 @@ static public $yy_action = array(
     }
     $this->_retvalue = array($this->yystack[$this->yyidx + -1]->minor[0] . $this->patterns[$this->yystack[$this->yyidx + 0]->minor], $this->yystack[$this->yyidx + -1]->minor[1] . ' ' . $this->yystack[$this->yyidx + 0]->minor);
     }
-#line 1686 "Parser.php"
-#line 770 "Parser.y"
+#line 1745 "PHP/LexerGenerator/Parser.php"
+#line 825 "PHP/LexerGenerator/Parser.y"
     function yy_r30(){
     $this->_retvalue = preg_quote($this->yystack[$this->yyidx + 0]->minor, '/');
     }
-#line 1691 "Parser.php"
-#line 773 "Parser.y"
+#line 1750 "PHP/LexerGenerator/Parser.php"
+#line 828 "PHP/LexerGenerator/Parser.y"
     function yy_r31(){
     $this->_retvalue = $this->makeCaseInsensitve(preg_quote($this->yystack[$this->yyidx + 0]->minor, '/'));
     }
-#line 1696 "Parser.php"
-#line 776 "Parser.y"
+#line 1755 "PHP/LexerGenerator/Parser.php"
+#line 831 "PHP/LexerGenerator/Parser.y"
     function yy_r32(){
     // increment internal sub-pattern counter
     // adjust back-references in pattern based on previous pattern
@@ -1696,18 +1753,18 @@ static public $yy_action = array(
     $this->_patternIndex += $test['subpatterns'];
     $this->_retvalue = $test['pattern'];
     }
-#line 1705 "Parser.php"
-#line 783 "Parser.y"
+#line 1764 "PHP/LexerGenerator/Parser.php"
+#line 838 "PHP/LexerGenerator/Parser.y"
     function yy_r33(){
     $this->_retvalue = $this->yystack[$this->yyidx + -1]->minor . preg_quote($this->yystack[$this->yyidx + 0]->minor, '/');
     }
-#line 1710 "Parser.php"
-#line 786 "Parser.y"
+#line 1769 "PHP/LexerGenerator/Parser.php"
+#line 841 "PHP/LexerGenerator/Parser.y"
     function yy_r34(){
     $this->_retvalue = $this->yystack[$this->yyidx + -1]->minor . $this->makeCaseInsensitve(preg_quote($this->yystack[$this->yyidx + 0]->minor, '/'));
     }
-#line 1715 "Parser.php"
-#line 789 "Parser.y"
+#line 1774 "PHP/LexerGenerator/Parser.php"
+#line 844 "PHP/LexerGenerator/Parser.y"
     function yy_r35(){
     // increment internal sub-pattern counter
     // adjust back-references in pattern based on previous pattern
@@ -1715,7 +1772,7 @@ static public $yy_action = array(
     $this->_patternIndex += $test['subpatterns'];
     $this->_retvalue = $this->yystack[$this->yyidx + -1]->minor . $test['pattern'];
     }
-#line 1724 "Parser.php"
+#line 1783 "PHP/LexerGenerator/Parser.php"
 
     /**
      * placeholder for the left hand side in a reduce operation.
@@ -1839,7 +1896,7 @@ static public $yy_action = array(
     }
     throw new Exception('Unexpected ' . $this->tokenName($yymajor) . '(' . $TOKEN
         . '), expected one of: ' . implode(',', $expect));
-#line 1849 "Parser.php"
+#line 1908 "PHP/LexerGenerator/Parser.php"
     }
 
     /**
