@@ -34,11 +34,11 @@ class TestRegexLexer
     public $token;
     public $value;
     public $line;
+    public $column;
 
     function __construct($data)
     {
-        $this->input = $data;
-        $this->N = 0;
+	$this->reset($data, 1);
     }
 
     function reset($data, $line)
@@ -47,6 +47,7 @@ class TestRegexLexer
         $this->N = 0;
         // passed in from parent parser
         $this->line = $line;
+        $this->column = 1;
         $this->yybegin(self::INITIAL);
     }
 
@@ -56,6 +57,7 @@ class TestRegexLexer
 %token {$this->token}
 %value {$this->value}
 %line {$this->line}
+%column {$this->column}
 NONESCAPE = /[^[\\^$.|()?*+{}]+/
 NONESCAPECHARCLASS = /[^\-\\]/
 ESCAPEDTHING = /\\[][{}*.^$|?()+]/
