@@ -1,23 +1,25 @@
 <?php
-class UnitTestSingleQuoteParser
+
+class UnitTestPositionParser
 {
     private $_counter;
     private $_data;
     private $line;
     private $column;
     private $state = 1;
+
     public $token;
     public $value;
 
     function __construct($data) {
-        $this -> _data = $data;
-        $this -> _counter = 0;
-        $this -> line = 1;
-        $this -> column = 1;
+        $this->_data = $data;
+        $this->_counter = 0;
+        $this->line = 1;
+        $this->column = 1;
     }
 
     function getState() {
-        return $this -> state;
+        return $this->state;
     }
 
 
@@ -53,13 +55,11 @@ class UnitTestSingleQuoteParser
         $tokenMap = array (
               1 => 0,
               2 => 0,
-              3 => 0,
-              4 => 0,
             );
         if ($this->_counter >= strlen($this->_data)) {
             return false; // end of input
         }
-        $yy_global_pattern = '/\G([ \t\n])|\G([tT][eE][sS][tT])|\G([a-zA-Z]+)|\G(.)/';
+        $yy_global_pattern = '/\G([ \t\n])|\G([a-zA-Z]+)/';
 
         do {
             if (preg_match($yy_global_pattern,$this->_data, $yymatches, null, $this->_counter)) {
@@ -112,10 +112,8 @@ class UnitTestSingleQuoteParser
                     continue;
                 } else {
                     $yy_yymore_patterns = array(
-        1 => array(0, "\G([tT][eE][sS][tT])|\G([a-zA-Z]+)|\G(.)"),
-        2 => array(0, "\G([a-zA-Z]+)|\G(.)"),
-        3 => array(0, "\G(.)"),
-        4 => array(0, ""),
+        1 => array(0, "\G([a-zA-Z]+)"),
+        2 => array(0, ""),
     );
 
                     // yymore is needed
@@ -192,26 +190,10 @@ class UnitTestSingleQuoteParser
     const START = 1;
     function yy_r1_1($yy_subpatterns)
     {
-
-    return false; //ignore this token
-    }
+ return false;     }
     function yy_r1_2($yy_subpatterns)
     {
-
-    echo 'test: ' . $this -> value . '<br>';
-    }
-    function yy_r1_3($yy_subpatterns)
-    {
-
-    echo 'word: ' . $this -> value . '<br>';
-    }
-    function yy_r1_4($yy_subpatterns)
-    {
-
-    echo 'Unknown : ' . $this -> value . '<br>';
-    }
+ printf("%d %d\n", $this->line, $this->column);     }
 
 
 }
-
-?>
