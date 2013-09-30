@@ -89,6 +89,7 @@ require_once 'PHP/LexerGenerator/Exception.php';
     private $value;
     private $line;
     private $column;
+    private $exception = 'Exception';
     private $matchlongest;
     private $_regexLexer;
     private $_regexParser;
@@ -149,7 +150,7 @@ require_once 'PHP/LexerGenerator/Exception.php';
                 }
             }
             if (!$match) {
-                throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                throw new ' . $this->exception . '(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
                     ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
             }
             ' . $this->token . ' = $match[1];
@@ -195,7 +196,7 @@ require_once 'PHP/LexerGenerator/Exception.php';
                 // yymore is needed
                 do {
                     if (!isset($yy_yymore_patterns[' . $this->token . '])) {
-                        throw new Exception(\'cannot do yymore for the last token\');
+	                    throw new ' . $this->exception . '(\'cannot do yymore for the last token\');
                     }
                     $match = false;
                     foreach ($yy_yymore_patterns[' . $this->token . '] as $index => $rule) {
@@ -212,7 +213,7 @@ require_once 'PHP/LexerGenerator/Exception.php';
                         }
                     }
                     if (!$match) {
-                        throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                        throw new ' . $this->exception . '(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
                             ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
                     }
                     ' . $this->token . ' = $match[1];
@@ -290,7 +291,7 @@ require_once 'PHP/LexerGenerator/Exception.php';
                 $yysubmatches = $yymatches;
                 $yymatches = array_filter($yymatches, \'strlen\'); // remove empty sub-patterns
                 if (!count($yymatches)) {
-                    throw new Exception(\'Error: lexing failed because a rule matched\' .
+                    throw new ' . $this->exception . '(\'Error: lexing failed because a rule matched\' .
                         \' an empty string.  Input "\' . substr(' . $this->input . ',
                         ' . $this->counter . ', 5) . \'... state ' . $statename . '\');
                 }
@@ -350,7 +351,7 @@ require_once 'PHP/LexerGenerator/Exception.php';
                     // yymore is needed
                     do {
                         if (!strlen($yy_yymore_patterns[' . $this->token . '][1])) {
-                            throw new Exception(\'cannot do yymore for the last token\');
+                            throw new ' . $this->exception . '(\'cannot do yymore for the last token\');
                         }
                         $yysubmatches = array();
                         if (preg_match(\'/\' . $yy_yymore_patterns[' . $this->token . '][1] . \'/' . $this->patternFlags . '\',
@@ -409,7 +410,7 @@ require_once 'PHP/LexerGenerator/Exception.php';
                     }
                 }
             } else {
-                throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                throw new ' . $this->exception . '(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
                     ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
             }
             break;
@@ -672,6 +673,7 @@ declarations(A) ::= processing_instructions(B) pattern_declarations(C). {
         'value' => true,
         'line' => true,
         'column' => true,
+        'exception' => true,
         'matchlongest' => true,
         'unicode' => true,
     );

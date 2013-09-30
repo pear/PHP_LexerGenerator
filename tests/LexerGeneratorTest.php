@@ -262,5 +262,27 @@ class LexerGeneratorTest extends PHPUnit_Framework_TestCase {
             "1 1\n1 6\n2 1\n3 1\n3 6\n"
         );
     }
+
+    /**
+     * Test use of custom exception class.
+     */
+    public function testLexerException() {
+        $diffFile = $this->dataPath . 'Exception.diff';
+        if ($this->runCodeTestCore(
+            $this->dataPath . 'Exception.plex',
+            $this->dataPath . 'Exception.php',
+            $this->dataPath . 'Exception.expect.php',
+            $diffFile
+        )) {
+            @unlink($diffFile);
+        } else {
+            $this->fail('Output mismatch. See ' . $diffFile . ' for details.');
+        }
+
+        /* The input passed to the lexer will trigger a syntax error, which should
+         * be an instance of the custom Exception class set in Exception.plex. */
+        $this->setExpectedException("CustomLexerException");
+        $this->runLexerTestCore('Exception', 'test 123', '');
+    }
 }
 ?>

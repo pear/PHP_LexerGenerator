@@ -30,7 +30,7 @@ class PHP_LexerGenerator_ParseryyToken implements ArrayAccess
 
     function __toString()
     {
-        return $this->_string;
+        return $this->string;
     }
 
     function offsetExists($offset)
@@ -94,7 +94,7 @@ class PHP_LexerGenerator_ParseryyStackEntry
 };
 
 // code external to the class is included here
-#line 3 "Parser.y"
+#line 3 "PHP/LexerGenerator/Parser.y"
 
 /* ?><?php {//*/
 /**
@@ -161,15 +161,15 @@ require_once 'PHP/LexerGenerator/Exception.php';
  * @version    @package_version@
  * @since      Class available since Release 0.1.0
  */
-#line 166 "Parser.php"
+#line 166 "PHP/LexerGenerator/Parser.php"
 
 // declare_class is output here
-#line 2 "Parser.y"
-class PHP_LexerGenerator_Parser#line 171 "Parser.php"
+#line 2 "PHP/LexerGenerator/Parser.y"
+class PHP_LexerGenerator_Parser#line 171 "PHP/LexerGenerator/Parser.php"
 {
 /* First off, code is included which follows the "include_class" declaration
 ** in the input file. */
-#line 82 "Parser.y"
+#line 78 "PHP/LexerGenerator/Parser.y"
 
     private $patterns;
     private $out;
@@ -180,6 +180,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
     private $value;
     private $line;
     private $column;
+    private $exception = 'Exception';
     private $matchlongest;
     private $_regexLexer;
     private $_regexParser;
@@ -240,7 +241,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                 }
             }
             if (!$match) {
-                throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                throw new ' . $this->exception . '(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
                     ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
             }
             ' . $this->token . ' = $match[1];
@@ -286,7 +287,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                 // yymore is needed
                 do {
                     if (!isset($yy_yymore_patterns[' . $this->token . '])) {
-                        throw new Exception(\'cannot do yymore for the last token\');
+	                    throw new ' . $this->exception . '(\'cannot do yymore for the last token\');
                     }
                     $match = false;
                     foreach ($yy_yymore_patterns[' . $this->token . '] as $index => $rule) {
@@ -303,7 +304,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                         }
                     }
                     if (!$match) {
-                        throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                        throw new ' . $this->exception . '(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
                             ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
                     }
                     ' . $this->token . ' = $match[1];
@@ -381,7 +382,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                 $yysubmatches = $yymatches;
                 $yymatches = array_filter($yymatches, \'strlen\'); // remove empty sub-patterns
                 if (!count($yymatches)) {
-                    throw new Exception(\'Error: lexing failed because a rule matched\' .
+                    throw new ' . $this->exception . '(\'Error: lexing failed because a rule matched\' .
                         \' an empty string.  Input "\' . substr(' . $this->input . ',
                         ' . $this->counter . ', 5) . \'... state ' . $statename . '\');
                 }
@@ -441,7 +442,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                     // yymore is needed
                     do {
                         if (!strlen($yy_yymore_patterns[' . $this->token . '][1])) {
-                            throw new Exception(\'cannot do yymore for the last token\');
+                            throw new ' . $this->exception . '(\'cannot do yymore for the last token\');
                         }
                         $yysubmatches = array();
                         if (preg_match(\'/\' . $yy_yymore_patterns[' . $this->token . '][1] . \'/' . $this->patternFlags . '\',
@@ -500,7 +501,7 @@ class PHP_LexerGenerator_Parser#line 171 "Parser.php"
                     }
                 }
             } else {
-                throw new Exception(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
+                throw new ' . $this->exception . '(\'Unexpected input "\' . ' . $this->input . '[' . $this->counter . '] . \'" at line \' .
                     ' . $this->line . ' . \', column \' . (' . $this->column . ' + 1));
             }
             break;
@@ -847,7 +848,7 @@ static public $yy_action = array(
     /**
      * @var int
      */
-    public $yyidx;                    /* Index of top element in stack */
+    public $yyidx = -1;                    /* Index of top element in stack */
     /**
      * @var int
      */
@@ -1254,7 +1255,7 @@ static public $yy_action = array(
             fprintf(self::$yyTraceFILE, "%sShift %d\n", self::$yyTracePrompt,
                 $yyNewState);
             fprintf(self::$yyTraceFILE, "%sStack:", self::$yyTracePrompt);
-            for($i = 1; $i <= $this->yyidx; $i++) {
+            for ($i = 1; $i <= $this->yyidx; $i++) {
                 fprintf(self::$yyTraceFILE, " %s",
                     self::$yyTokenName[$this->yystack[$i]->major]);
             }
@@ -1554,6 +1555,7 @@ static public $yy_action = array(
         'value' => true,
         'line' => true,
         'column' => true,
+        'exception' => true,
         'matchlongest' => true,
         'unicode' => true,
     );
@@ -1833,7 +1835,7 @@ static public $yy_action = array(
         $yygoto = self::$yyRuleInfo[$yyruleno]['lhs'];
         $yysize = self::$yyRuleInfo[$yyruleno]['rhs'];
         $this->yyidx -= $yysize;
-        for($i = $yysize; $i; $i--) {
+        for ($i = $yysize; $i; $i--) {
             // pop all of the right-hand side parameters
             array_pop($this->yystack);
         }
@@ -1884,7 +1886,7 @@ static public $yy_action = array(
      */
     function yy_syntax_error($yymajor, $TOKEN)
     {
-#line 70 "Parser.y"
+#line 66 "PHP/LexerGenerator/Parser.y"
 
     echo "Syntax Error on line " . $this->lex->line . ": token '" .
         $this->lex->value . "' while parsing rule:";
@@ -1922,9 +1924,11 @@ static public $yy_action = array(
      * The first argument is the major token number.  The second is
      * the token value string as scanned from the input.
      *
-     * @param int the token number
-     * @param mixed the token value
-     * @param mixed any extra arguments that should be passed to handlers
+     * @param int   $yymajor      the token number
+     * @param mixed $yytokenvalue the token value
+     * @param mixed ...           any extra arguments that should be passed to handlers
+     *
+     * @return void
      */
     function doParse($yymajor, $yytokenvalue)
     {
@@ -1946,14 +1950,19 @@ static public $yy_action = array(
         $yyendofinput = ($yymajor==0);
         
         if (self::$yyTraceFILE) {
-            fprintf(self::$yyTraceFILE, "%sInput %s\n",
-                self::$yyTracePrompt, self::$yyTokenName[$yymajor]);
+            fprintf(
+                self::$yyTraceFILE,
+                "%sInput %s\n",
+                self::$yyTracePrompt,
+                self::$yyTokenName[$yymajor]
+            );
         }
         
         do {
             $yyact = $this->yy_find_shift_action($yymajor);
-            if ($yymajor < self::YYERRORSYMBOL &&
-                  !$this->yy_is_expected_token($yymajor)) {
+            if ($yymajor < self::YYERRORSYMBOL
+                && !$this->yy_is_expected_token($yymajor)
+            ) {
                 // force a syntax error
                 $yyact = self::YY_ERROR_ACTION;
             }
@@ -1969,8 +1978,11 @@ static public $yy_action = array(
                 $this->yy_reduce($yyact - self::YYNSTATE);
             } elseif ($yyact == self::YY_ERROR_ACTION) {
                 if (self::$yyTraceFILE) {
-                    fprintf(self::$yyTraceFILE, "%sSyntax Error!\n",
-                        self::$yyTracePrompt);
+                    fprintf(
+                        self::$yyTraceFILE,
+                        "%sSyntax Error!\n",
+                        self::$yyTracePrompt
+                    );
                 }
                 if (self::YYERRORSYMBOL) {
                     /* A syntax error has occurred.
@@ -1996,18 +2008,22 @@ static public $yy_action = array(
                         $this->yy_syntax_error($yymajor, $yytokenvalue);
                     }
                     $yymx = $this->yystack[$this->yyidx]->major;
-                    if ($yymx == self::YYERRORSYMBOL || $yyerrorhit ){
+                    if ($yymx == self::YYERRORSYMBOL || $yyerrorhit ) {
                         if (self::$yyTraceFILE) {
-                            fprintf(self::$yyTraceFILE, "%sDiscard input token %s\n",
-                                self::$yyTracePrompt, self::$yyTokenName[$yymajor]);
+                            fprintf(
+                                self::$yyTraceFILE,
+                                "%sDiscard input token %s\n",
+                                self::$yyTracePrompt,
+                                self::$yyTokenName[$yymajor]
+                            );
                         }
                         $this->yy_destructor($yymajor, $yytokenvalue);
                         $yymajor = self::YYNOCODE;
                     } else {
-                        while ($this->yyidx >= 0 &&
-                                 $yymx != self::YYERRORSYMBOL &&
-        ($yyact = $this->yy_find_shift_action(self::YYERRORSYMBOL)) >= self::YYNSTATE
-                              ){
+                        while ($this->yyidx >= 0
+                            && $yymx != self::YYERRORSYMBOL
+                            && ($yyact = $this->yy_find_shift_action(self::YYERRORSYMBOL)) >= self::YYNSTATE
+                        ) {
                             $this->yy_pop_parser_stack();
                         }
                         if ($this->yyidx < 0 || $yymajor==0) {
