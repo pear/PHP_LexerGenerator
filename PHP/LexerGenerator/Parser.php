@@ -223,7 +223,7 @@ class PHP_LexerGenerator_Parser#line 171 "PHP/LexerGenerator/Parser.php"
             $rules = array(');
         foreach ($rules as $rule) {
             fwrite($this->out, '
-                \'/\G' . $rule['pattern'] . '/' . $this->patternFlags . ' \',');
+                "/\G' . $rule['pattern'] . '/' . $this->patternFlags . ' ",');
         }
         fwrite($this->out, '
             );
