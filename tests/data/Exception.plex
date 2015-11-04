@@ -29,6 +29,7 @@ class UnitTestExceptionParser
 %line $this->line
 %token $this->token
 %value $this->value
+%column $this->column
 %exception CustomLexerException
 WHITESPACE = /[ \t\n]/
 WORD = /[a-zA-Z]+/
